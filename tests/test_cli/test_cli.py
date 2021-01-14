@@ -1,22 +1,22 @@
-import subprocess
+import subprocess  # noqa
 import tempfile
 from pathlib import Path
 
 from tests.parse_csv import parse_csv
 
 
-def test_cli(test_data: Path):
+def test_cli(test_data: Path):  # noqa: WPS210
     """Run the project's CLI and test it."""
     with tempfile.TemporaryDirectory() as temp:
         config = test_data / 'config.yaml'
         source = test_data / 'people.csv'
         destination = Path(temp) / 'output.csv'
 
-        subprocess.call([
+        subprocess.call([  # noqa
             'vendetta',
             str(config),
             str(source),
-            str(destination)
+            str(destination),
         ])
 
         with destination.open() as test_result:

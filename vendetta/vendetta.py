@@ -4,7 +4,7 @@ from typing import Dict, TextIO
 
 from faker import Faker
 
-from vendetta.models import Config, ResponsibleFake, NaiveFake
+from vendetta.models import Config, NaiveFake, ResponsibleFake
 
 
 class Vendetta:
@@ -40,6 +40,9 @@ class Vendetta:
         """Anonymize individual file-like object."""
         reader = csv.DictReader(input_file)
         columns = reader.fieldnames
+
+        if not columns:
+            raise ValueError('The source file has no columns.')
 
         writer = csv.DictWriter(output_file, fieldnames=columns)
         writer.writeheader()
