@@ -1,63 +1,36 @@
-import csv
 from pathlib import Path
 
+import strictyaml
 import typer
-import yaml
 
 from vendetta.models import Config
 from vendetta.vendetta import Vendetta
 
-try:  # noqa
-    from yaml import CSafeDumper as SafeDumper  # noqa
-    from yaml import CSafeLoader as SafeLoader  # noqa
-except ImportError:
-    from yaml import SafeDumper  # type: ignore   # noqa
-    from yaml import SafeLoader  # type: ignore   # noqa
-
-
 app = typer.Typer()
 
 
-def read_config() -> Config:
+def read_config(path: Path) -> Config:
     """Read configuration file."""
-    with (Path(__file__).parent.parent / 'config.yaml').open() as config_file:
-        return Config(**yaml.load(config_file, Loader=SafeLoader))
+    raw = path.read_text()
+    parsed = strictyaml.load(raw).data
+    return Config(**parsed)
 
 
 @app.command()
-def cli() -> None:
-    """CLI."""
-    config = read_config()
-    source_directory = Path(
-        '...',
-    )
-    destination_directory = Path(
-        '...',
-    )
-
+def cli(
+    config_file: Path,
+    source: Path,
+    destination: Path,
+) -> None:
+    """Vendetta: anonymize CSV datasets."""
+    config = read_config(config_file)
     vendetta = Vendetta(config=config)
 
-    for source_path in source_directory.rglob('*'):
-        destination_path = destination_directory / source_path.relative_to(
-            source_directory,
+    with source.open('r') as input_file, destination.open('w') as output_file:
+        vendetta(
+            input_file=input_file,
+            output_file=output_file,
         )
-        with source_path.open() as source_file:
-            reader = csv.DictReader(source_file)
-
-            if not destination_path.parent.exists():
-                destination_path.parent.mkdir(parents=True, exist_ok=True)
-
-            with destination_path.open('w+') as destination_file:
-                writer = csv.DictWriter(
-                    destination_file,
-                    fieldnames=reader.fieldnames,
-                )
-                writer.writeheader()
-
-                for row in reader:
-                    writer.writerow(
-                        vendetta.anonymize_row(row),
-                    )
 
 
 def main() -> None:

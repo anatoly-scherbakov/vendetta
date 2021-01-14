@@ -1,0 +1,3 @@
+columns:
+  CustomerName: first_name
+  CustomerLastName: last_name

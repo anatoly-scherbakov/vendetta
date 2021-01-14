@@ -10,9 +10,6 @@ NaiveFake = Callable[[], str]
 # Generate a random value cached based on original value
 ResponsibleFake = Callable[[str], str]
 
-# Function which changes the row of the source data.
-RowUpdater = Callable[[Row], None]
-
 
 class FakerConfig(BaseModel):
     """Faker configuration."""

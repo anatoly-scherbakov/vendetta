@@ -1,0 +1,10 @@
+columns:
+  firstname: first_name
+  lastname: last_name
+  birthday: date
+  address: street_address
+  city: city
+  state: state
+  country: country
+  email: email
+  phone: phone_number

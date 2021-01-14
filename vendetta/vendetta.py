@@ -1,16 +1,10 @@
 import csv
 from functools import lru_cache
-from typing import Callable, Dict, TextIO
+from typing import Dict, TextIO
 
 from faker import Faker
 
-from vendetta.models import Config, Row, ResponsibleFake, NaiveFake
-
-faker = Faker()
-
-
-def cached_faker(fake: Callable[[], str]) -> Callable[[str], str]:
-    return lru_cache()(lambda _: fake())
+from vendetta.models import Config, ResponsibleFake, NaiveFake
 
 
 class Vendetta:
@@ -52,7 +46,7 @@ class Vendetta:
 
         fake_per_column = {
             column_name: self.get_fake_by_name(fake_name)
-            for column_name, fake_name in self.config.columns
+            for column_name, fake_name in self.config.columns.items()
             if column_name in set(columns)
         }
 
@@ -61,3 +55,5 @@ class Vendetta:
                 row[column_name] = fake(row[column_name])
 
             writer.writerow(row)
+
+    __call__ = anonymize_file

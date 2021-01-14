@@ -1,0 +1,3 @@
+firstname,lastname,birthday,address,city,state,country,email,phone
+Someone,LastName,,,city,state,country,x,y
+SomeoneElse,LastName,,,city,state,country,y,x
