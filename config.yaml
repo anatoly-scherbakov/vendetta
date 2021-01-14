@@ -1,0 +1,38 @@
+columns:
+  owner__full_name: name
+  owner__salutation: prefix
+  owner__first_name: first_name
+  owner__middle_name: first_name
+  owner__last_name: last_name
+  owner__home_phone: phone_number
+  owner__mobile_phone: phone_number
+  owner__work_phone: phone_number
+  owner__birth_date: date
+
+  # address__county: city
+  address__line_1: street_address
+  # address__line_2: street_suffix
+  address__city: city
+  address__state: postalcode
+  # address__zipcode_extra: postal_code_plus_4
+
+  co_buyer__full_name: name
+  co_buyer__salutation: prefix
+  co_buyer__first_name: first_name
+  co_buyer__middle_name: first_name
+  co_buyer__last_name: last_name
+  co_buyer__home_phone: phone_number
+  co_buyer__mobile_phone: phone_number
+  co_buyer__work_phone: phone_number
+  co_buyer__birth_date: date
+
+  # co_buyer_address__county: county
+  co_buyer_address__line_1: street_name
+  # co_buyer_address__line_2: line_2
+  co_buyer_address__city: city
+  co_buyer_address__state: state
+  # co_buyer_address__zipcode_extra: postal_code_plus_4
+
+  owner__email_1: email
+  owner__email_2: email
+  owner__email_3: email
