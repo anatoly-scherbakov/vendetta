@@ -59,4 +59,31 @@ class Vendetta:
 
             writer.writerow(row)
 
+    def print_untouched(self, input_file: TextIO, output_file: TextIO) -> None:
+        """Print the data untouched by the config."""
+        reader = csv.DictReader(input_file)
+        columns = reader.fieldnames
+
+        touched_columns = set(self.config.columns.keys())
+        untouched_columns = [
+            column for column in columns
+            if column not in touched_columns
+        ]
+
+        if not untouched_columns:
+            return
+
+        writer = csv.DictWriter(output_file, fieldnames=untouched_columns)
+        writer.writeheader()
+
+        untouched_columns_set = set(untouched_columns)
+        for row in reader:
+            sliced_row = {
+                column_name: column_value
+                for column_name, column_value
+                in row.items()
+                if column_name in untouched_columns_set
+            }
+            writer.writerow(sliced_row)
+
     __call__ = anonymize_file

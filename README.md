@@ -39,7 +39,7 @@ columns:
 and run:
 
 ```shell
-vendetta orders.yaml orders.csv anon.csv
+vendetta anonymize orders.yaml < orders.csv > anon.csv
 ```
 
 which gives something like this in `anon.csv`:

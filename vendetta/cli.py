@@ -19,7 +19,7 @@ def read_config(path: Path) -> Config:
 
 
 @app.command()
-def cli(
+def anonymize(
     config_file: Path,
     source: Optional[Path] = None,
     destination: Optional[Path] = None,
@@ -33,6 +33,32 @@ def cli(
     with source.open('r') if source else stdin as input_file:
         with destination.open('w') if destination else stdout as output_file:
             vendetta(
+                input_file=input_file,
+                output_file=output_file,
+            )
+
+
+@app.command()
+def untouched(
+    config_file: Path,
+    source: Optional[Path] = None,
+    destination: Optional[Path] = None,
+):
+    """
+    Slice the columns of provided file which are not covered by config.
+
+    Useful to find which columns with potential sensitive data might have been
+    missed.
+    """
+    config = read_config(config_file)
+
+    vendetta = Vendetta(
+        config=config,
+    )
+
+    with source.open('r') if source else stdin as input_file:
+        with destination.open('w') if destination else stdout as output_file:
+            vendetta.print_untouched(
                 input_file=input_file,
                 output_file=output_file,
             )
