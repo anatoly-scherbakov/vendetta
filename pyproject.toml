@@ -10,7 +10,7 @@ style = "https://raw.githubusercontent.com/wemake-services/wemake-python-stylegu
 [tool.poetry]
 name = "vendetta"
 description = "Anonymize CSV datasets"
-version = "0.0.1"
+version = "0.0.2"
 license = "MIT"
 
 authors = []
