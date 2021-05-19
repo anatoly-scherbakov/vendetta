@@ -1,4 +1,6 @@
 from pathlib import Path
+from sys import stdout, stdin
+from typing import Optional
 
 import strictyaml
 import typer
@@ -19,18 +21,21 @@ def read_config(path: Path) -> Config:
 @app.command()
 def cli(
     config_file: Path,
-    source: Path,
-    destination: Path,
+    source: Optional[Path] = None,
+    destination: Optional[Path] = None,
 ) -> None:
     """Vendetta: anonymize CSV datasets."""
     config = read_config(config_file)
-    vendetta = Vendetta(config=config)
+    vendetta = Vendetta(
+        config=config,
+    )
 
-    with source.open('r') as input_file, destination.open('w') as output_file:
-        vendetta(
-            input_file=input_file,
-            output_file=output_file,
-        )
+    with source.open('r') if source else stdin as input_file:
+        with destination.open('w') if destination else stdout as output_file:
+            vendetta(
+                input_file=input_file,
+                output_file=output_file,
+            )
 
 
 def main() -> None:
